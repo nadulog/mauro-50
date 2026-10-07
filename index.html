@@ -6,8 +6,25 @@
     <meta name="theme-color" content="#080705" />
     <meta
       name="description"
-      content="Invitación al cumpleaños de 50 de Mauro — 21 de noviembre, 21:00 hs."
+      content="Los espero para festejar junto a mí mis 50 años — 21 de noviembre, 21:00 hs."
     />
+    <link rel="canonical" href="https://bloomdate-mauro50.netlify.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:url" content="https://bloomdate-mauro50.netlify.app/" />
+    <meta property="og:title" content="Mauro · Mis 50 años" />
+    <meta
+      property="og:description"
+      content="Los espero para festejar junto a mí mis 50 años."
+    />
+    <meta
+      property="og:image"
+      content="https://bloomdate-mauro50.netlify.app/assets/mauro-50-whatsapp.png"
+    />
+    <meta property="og:image:width" content="2172" />
+    <meta property="og:image:height" content="724" />
+    <meta property="og:image:alt" content="Mauro · Mis 50 años" />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>Mauro · 50 años</title>
     <link rel="preload" as="image" href="assets/portada.png" />
     <link rel="stylesheet" href="styles.css" />
@@ -19,11 +36,10 @@
       aria-label="Reproducir música"
       aria-pressed="false"
     >
-      <span class="audio-toggle__disc" aria-hidden="true">♪</span>
-      <span class="audio-toggle__label">Música</span>
+      <span class="audio-toggle__icon" aria-hidden="true">♪</span>
     </button>
 
-    <audio id="invitationAudio" loop preload="metadata" playsinline>
+    <audio id="invitationAudio" autoplay loop preload="auto" playsinline>
       <source src="assets/musica.mp3" type="audio/mpeg" />
     </audio>
 
@@ -41,10 +57,17 @@
         </button>
       </section>
 
+      <section class="message-panel" aria-labelledby="warmMessageTitle">
+        <p class="message-panel__eyebrow">Una noche para celebrar</p>
+        <h2 id="warmMessageTitle">Los espero para festejar junto a mí mis 50 años.</h2>
+        <span class="message-panel__ornament" aria-hidden="true"></span>
+        <p class="message-panel__closing">Será una alegría compartir este momento con ustedes.</p>
+      </section>
+
       <section class="panel panel--countdown" aria-label="Cuenta regresiva para la fiesta">
         <img
           class="panel__image"
-          src="assets/cuenta-regresiva.png"
+          src="assets/cuenta-regresiva-sin-disco.png"
           alt="Falta poco para el cumpleaños de Mauro"
           width="1122"
           height="1402"

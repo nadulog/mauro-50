@@ -84,7 +84,6 @@ function syncAudioButton() {
   audioToggle.classList.toggle("is-playing", isPlaying);
   audioToggle.setAttribute("aria-pressed", String(isPlaying));
   audioToggle.setAttribute("aria-label", isPlaying ? "Pausar música" : "Reproducir música");
-  audioToggle.querySelector(".audio-toggle__label").textContent = isPlaying ? "Pausar" : "Música";
 }
 
 async function playMusic() {
@@ -118,6 +117,7 @@ document.addEventListener(
 
 invitationAudio.addEventListener("play", syncAudioButton);
 invitationAudio.addEventListener("pause", syncAudioButton);
+playMusic();
 
 document.querySelector('[data-action="calendar"]').addEventListener("click", downloadCalendarEvent);
 

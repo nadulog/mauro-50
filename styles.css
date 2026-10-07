@@ -34,11 +34,11 @@ a {
   top: max(16px, env(safe-area-inset-top));
   right: max(16px, calc((100vw - 540px) / 2 + 16px));
   z-index: 20;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 42px;
-  padding: 5px 12px 5px 5px;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  padding: 0;
   border: 1px solid rgb(239 192 103 / 62%);
   border-radius: 999px;
   background: rgb(9 8 6 / 86%);
@@ -48,28 +48,24 @@ a {
   backdrop-filter: blur(8px);
 }
 
-.audio-toggle__disc {
-  display: grid;
-  width: 31px;
-  height: 31px;
-  place-items: center;
-  border: 1px solid rgb(239 192 103 / 55%);
-  border-radius: 50%;
-  background: radial-gradient(circle, #d7a957 0 12%, #17120c 14% 44%, #c58b38 46% 49%, #0b0907 51%);
+.audio-toggle__icon {
+  display: block;
   color: #f8dda0;
   font-family: Georgia, serif;
-  font-size: 0.88rem;
+  font-size: 1.7rem;
+  line-height: 1;
+  transform: translateY(-1px);
 }
 
-.audio-toggle__label {
-  font-family: system-ui, sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.audio-toggle.is-playing {
+  box-shadow:
+    0 8px 30px rgb(0 0 0 / 44%),
+    0 0 0 5px rgb(232 184 95 / 10%),
+    0 0 24px rgb(232 184 95 / 20%);
 }
 
-.audio-toggle.is-playing .audio-toggle__disc {
-  animation: disc-spin 4s linear infinite;
+.audio-toggle.is-playing .audio-toggle__icon {
+  animation: note-pulse 1.6s ease-in-out infinite;
 }
 
 .audio-toggle:focus-visible {
@@ -98,6 +94,75 @@ a {
   height: auto;
   user-select: none;
   -webkit-user-drag: none;
+}
+
+.message-panel {
+  position: relative;
+  display: grid;
+  min-height: 430px;
+  place-content: center;
+  padding: 72px 11%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 45%, rgb(172 111 36 / 12%), transparent 44%),
+    linear-gradient(145deg, #0b0906, #050403 58%, #0c0905);
+  text-align: center;
+}
+
+.message-panel::before,
+.message-panel::after {
+  position: absolute;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgb(236 189 98 / 58%), transparent);
+}
+
+.message-panel::before {
+  top: 34px;
+}
+
+.message-panel::after {
+  bottom: 34px;
+}
+
+.message-panel__eyebrow {
+  margin: 0 0 24px;
+  color: #c99547;
+  font-family: system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.message-panel h2 {
+  max-width: 420px;
+  margin: 0 auto;
+  color: transparent;
+  background: linear-gradient(105deg, #9c692e, #ffe5a4 42%, #c58b37 70%, #fff0be);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-size: clamp(2rem, 8.8vw, 3.15rem);
+  font-weight: 400;
+  line-height: 1.17;
+}
+
+.message-panel__ornament {
+  display: block;
+  width: 64px;
+  height: 1px;
+  margin: 30px auto 25px;
+  background: #dba850;
+  box-shadow: -14px 0 0 -0.25px #8c5b27, 14px 0 0 -0.25px #8c5b27;
+}
+
+.message-panel__closing {
+  max-width: 330px;
+  margin: 0 auto;
+  color: #ddc18d;
+  font-size: 1.02rem;
+  line-height: 1.65;
 }
 
 .panel:not(:first-child)::before {
@@ -270,9 +335,15 @@ a {
   }
 }
 
-@keyframes disc-spin {
-  to {
-    transform: rotate(360deg);
+@keyframes note-pulse {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translateY(-1px) scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-1px) scale(1.08);
   }
 }
 
@@ -285,7 +356,7 @@ a {
     animation: none;
   }
 
-  .audio-toggle.is-playing .audio-toggle__disc {
+  .audio-toggle.is-playing .audio-toggle__icon {
     animation: none;
   }
 }
