@@ -78,6 +78,7 @@ function showToast(message) {
 
 const invitationAudio = document.querySelector("#invitationAudio");
 const audioToggle = document.querySelector(".audio-toggle");
+let musicWasPausedByVisitor = false;
 
 function syncAudioButton() {
   const isPlaying = !invitationAudio.paused;
@@ -87,37 +88,61 @@ function syncAudioButton() {
 }
 
 async function playMusic() {
+  if (musicWasPausedByVisitor) return false;
+
   try {
+    invitationAudio.muted = false;
+    invitationAudio.volume = 1;
     await invitationAudio.play();
     syncAudioButton();
+    return true;
   } catch {
     syncAudioButton();
+    return false;
   }
+}
+
+function tryAutoplayMusic() {
+  if (invitationAudio.paused && !musicWasPausedByVisitor) {
+    void playMusic();
+  }
+}
+
+function startMusicOnFirstInteraction(event) {
+  if (event.target.closest?.(".audio-toggle")) return;
+
+  void playMusic().then((started) => {
+    if (!started) return;
+    ["pointerdown", "touchstart", "click", "keydown"].forEach((eventName) => {
+      document.removeEventListener(eventName, startMusicOnFirstInteraction, true);
+    });
+  });
 }
 
 audioToggle.addEventListener("click", async (event) => {
   event.stopPropagation();
   if (invitationAudio.paused) {
+    musicWasPausedByVisitor = false;
     await playMusic();
   } else {
+    musicWasPausedByVisitor = true;
     invitationAudio.pause();
     syncAudioButton();
   }
 });
 
-document.addEventListener(
-  "pointerdown",
-  (event) => {
-    if (!event.target.closest(".audio-toggle") && invitationAudio.paused) {
-      playMusic();
-    }
-  },
-  { once: true },
-);
+["pointerdown", "touchstart", "click", "keydown"].forEach((eventName) => {
+  document.addEventListener(eventName, startMusicOnFirstInteraction, true);
+});
 
 invitationAudio.addEventListener("play", syncAudioButton);
 invitationAudio.addEventListener("pause", syncAudioButton);
-playMusic();
+invitationAudio.addEventListener("loadeddata", tryAutoplayMusic, { once: true });
+invitationAudio.addEventListener("canplay", tryAutoplayMusic, { once: true });
+window.addEventListener("load", tryAutoplayMusic, { once: true });
+window.addEventListener("pageshow", tryAutoplayMusic);
+invitationAudio.load();
+tryAutoplayMusic();
 
 document.querySelector('[data-action="calendar"]').addEventListener("click", downloadCalendarEvent);
 
