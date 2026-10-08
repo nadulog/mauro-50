@@ -102,21 +102,36 @@ async function playMusic() {
   }
 }
 
-function tryAutoplayMusic() {
-  if (invitationAudio.paused && !musicWasPausedByVisitor) {
-    void playMusic();
-  }
+let musicPrompt;
+
+function showMusicPrompt() {
+  if (musicPrompt || !invitationAudio.paused || musicWasPausedByVisitor) return;
+
+  musicPrompt = document.createElement("button");
+  musicPrompt.type = "button";
+  musicPrompt.textContent = "Tocá para abrir la invitación";
+  musicPrompt.setAttribute("aria-label", "Abrir invitación y reproducir música");
+  Object.assign(musicPrompt.style, {
+    position: "fixed", inset: "0", zIndex: "100", border: "0", width: "100%",
+    background: "rgba(8, 7, 5, 0.96)", color: "#f7e9c5", font: "600 1rem/1.2 system-ui, sans-serif",
+    letterSpacing: "0.08em", textTransform: "uppercase", cursor: "pointer",
+  });
+  musicPrompt.addEventListener("click", async () => {
+    const started = await playMusic();
+    if (started) {
+      musicPrompt.remove();
+      musicPrompt = null;
+    }
+  });
+  document.body.appendChild(musicPrompt);
 }
 
-function startMusicOnFirstInteraction(event) {
-  if (event.target.closest?.(".audio-toggle")) return;
-
-  void playMusic().then((started) => {
-    if (!started) return;
-    ["pointerdown", "touchstart", "click", "keydown"].forEach((eventName) => {
-      document.removeEventListener(eventName, startMusicOnFirstInteraction, true);
+function tryAutoplayMusic() {
+  if (invitationAudio.paused && !musicWasPausedByVisitor) {
+    void playMusic().then((started) => {
+      if (!started) showMusicPrompt();
     });
-  });
+  }
 }
 
 audioToggle.addEventListener("click", async (event) => {
@@ -129,10 +144,6 @@ audioToggle.addEventListener("click", async (event) => {
     invitationAudio.pause();
     syncAudioButton();
   }
-});
-
-["pointerdown", "touchstart", "click", "keydown"].forEach((eventName) => {
-  document.addEventListener(eventName, startMusicOnFirstInteraction, true);
 });
 
 invitationAudio.addEventListener("play", syncAudioButton);
