@@ -148,7 +148,10 @@
           height="1402"
           loading="lazy"
         />
-        <a class="hotspot hotspot--rsvp" href="#" data-pending="confirmación de asistencia">
+        <a
+          class="hotspot hotspot--rsvp"
+          href="https://bloomdate-rsvp.netlify.app/r/mauro-50"
+        >
           <span class="sr-only">Confirmar asistencia</span>
         </a>
         <p class="rsvp-deadline">Confirmar hasta el 14 de Noviembre</p>
@@ -157,5 +160,16 @@
 
     <div class="toast" role="status" aria-live="polite" aria-hidden="true"></div>
     <script src="script.js"></script>
+    <script>
+      (function () {
+        var token = new URLSearchParams(window.location.search).get('invite');
+        if (!token) return;
+        document.querySelectorAll('a[href*="/r/"]').forEach(function (a) {
+          var url = new URL(a.href);
+          url.searchParams.set('invite', token);
+          a.href = url.toString();
+        });
+      })();
+    </script>
   </body>
 </html>
