@@ -1,7 +1,7 @@
 const EVENT = {
   title: "Mauro · 50 años",
-  start: new Date("2026-11-21T21:00:00-03:00"),
-  end: new Date("2026-11-22T00:00:00-03:00"),
+  start: new Date("2026-11-21T21:30:00-03:00"),
+  end: new Date("2026-11-22T00:30:00-03:00"),
   location: "Mona, Roca 1932",
   description: "Celebramos los 50 años de Mauro.",
 };
